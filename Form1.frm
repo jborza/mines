@@ -87,10 +87,10 @@ End Sub
 
 Private Sub Form_Load()
     Ticks = 0
-    Configuration.Rows = 11
-    Configuration.Columns = 11
+    Configuration.Rows = 10
+    Configuration.Columns = 10
     Configuration.Mines = 10
-    Configuration.ShowAll = False
+    Configuration.ShowAll = True
 End Sub
 
 Private Sub Timer1_Timer()

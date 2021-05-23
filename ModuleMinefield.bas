@@ -1,24 +1,49 @@
 Attribute VB_Name = "Minefield"
-Public MineLocations() As Point
 Public FlaggedMines As Integer
 'stores mine neighbor counts
 Public MinesWithCount() As Integer
+Dim MineLookup As New Collection
 
 Public Function GetIndex(Row As Integer, Column As Integer) As Integer
      GetIndex = Row * Configuration.Columns + Column
 End Function
 
+Public Function ExistsOld(ByVal col As Collection, ByVal key As String) As Boolean
+    On Error GoTo DoesntExist
+    col.Item (key)
+    Exists = True
+    Exit Function
+DoesntExist:
+    Exists = False
+End Function
+
+Public Function Exists(ByRef col As Collection, ByVal key As String) As Boolean
+    On Error GoTo DoesntExist
+    col.Item (key)
+    Exists = True
+    Exit Function
+DoesntExist:
+    Exists = False
+End Function
+
 Sub GenerateMines()
-    ReDim MineLocations(Configuration.Mines - 1) As Point
     Dim pt As Point
     
     Dim i As Integer
-    For i = 0 To Configuration.Mines - 1
-        ' TODO don't insert the same mine twice
+    Dim key As Integer
+    ' For i = 0 To Configuration.Mines - 1
+    Do While MineLookup.Count < Configuration.Mines
+    
         pt.x = Int((Configuration.Columns * Rnd))
         pt.y = Int((Configuration.Rows * Rnd))
-        MineLocations(i) = pt
-    Next
+        key = Minefield.GetIndex(pt.y, pt.x)
+        ' don't insert the same mine twice
+        If Exists(MineLookup, Str(key)) Then
+            i = i - 1
+        Else
+            Call MineLookup.Add(key, Str(key))
+        End If
+    Loop
     Call PopulateNeighbors
 End Sub
 
@@ -26,8 +51,8 @@ Sub PopulateNeighbors()
     ReDim MinesWithCount(Configuration.Columns * Configuration.Rows)
     ' insert mines first
     Dim index As Integer
-    For i = LBound(MineLocations) To UBound(MineLocations)
-        index = GetIndex(MineLocations(i).y, MineLocations(i).x)
+    For i = 1 To MineLookup.Count
+        index = MineLookup(i)
         MinesWithCount(index) = -1
     Next
     Dim Row As Integer
@@ -60,7 +85,6 @@ Public Function GetNeighborCount(Row As Integer, Column As Integer) As Integer
     GetNeighborCount = MinesWithCount(GetIndex(Row, Column))
 End Function
 
-'TODO precalculate this
 Function CalculateNeighborCount(Row As Integer, Column As Integer) As Integer
     Dim Count As Integer
     Dim x As Integer
