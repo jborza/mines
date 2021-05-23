@@ -2,7 +2,7 @@ Attribute VB_Name = "Minefield"
 Public FlaggedMines As Integer
 'stores mine neighbor counts
 Public MinesWithCount() As Integer
-Dim MineLookup As New Collection
+Public MineLookup As New Collection
 
 Public Function GetIndex(Row As Integer, Column As Integer) As Integer
      GetIndex = Row * Configuration.Columns + Column

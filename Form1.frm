@@ -4,10 +4,10 @@ Begin VB.Form Form1
    ClientHeight    =   7395
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   4980
+   ClientWidth     =   4950
    LinkTopic       =   "Form1"
    ScaleHeight     =   7395
-   ScaleWidth      =   4980
+   ScaleWidth      =   4950
    StartUpPosition =   3  'Windows Default
    Begin Project1.UserControlField UserControlField1 
       Height          =   6015
@@ -15,8 +15,8 @@ Begin VB.Form Form1
       TabIndex        =   3
       Top             =   1200
       Width           =   4695
-      _extentx        =   10610
-      _extenty        =   10821
+      _ExtentX        =   10610
+      _ExtentY        =   10821
    End
    Begin VB.CommandButton Command1 
       Appearance      =   0  'Flat
@@ -89,10 +89,10 @@ End Sub
 
 Private Sub Form_Load()
     Ticks = 0
-    Configuration.Rows = 10
-    Configuration.Columns = 10
-    Configuration.Mines = 10
-    Configuration.ShowAll = True
+    Configuration.Rows = 3
+    Configuration.Columns = 3
+    Configuration.Mines = 3
+    Configuration.ShowAll = False
 End Sub
 
 Private Sub Timer1_Timer()
@@ -102,4 +102,9 @@ End Sub
 
 Public Sub UpdateFlaggedMines()
     LabelMines.Caption = (Configuration.Mines - Minefield.FlaggedMines)
+End Sub
+
+Public Sub GameOver()
+    Timer1.Enabled = False
+    Command1.Caption = ":-("
 End Sub

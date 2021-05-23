@@ -8,14 +8,14 @@ Begin VB.UserControl UserControlField
    ScaleHeight     =   6300
    ScaleWidth      =   5010
    Begin Project1.UserControlSquare Squares 
-      Height          =   495
+      Height          =   375
       Index           =   32767
-      Left            =   24080
+      Left            =   3960
       TabIndex        =   0
       Top             =   5280
-      Width           =   495
-      _ExtentX        =   873
-      _ExtentY        =   873
+      Width           =   375
+      _ExtentX        =   661
+      _ExtentY        =   661
    End
 End
 Attribute VB_Name = "UserControlField"
@@ -38,7 +38,7 @@ Sub LayoutControls()
             idx = Minefield.GetIndex(Row, col)
             Load Squares(idx)
             With Squares(idx)
-                .Move col * 400, Row * 400, 400, 400
+                .Move col * 405, Row * 405, 405, 405
             
                 If Minefield.HasMine(Row, col) Then
                     .HasMine = True
@@ -59,12 +59,19 @@ Public Sub Initialize()
     Call LayoutControls
 End Sub
 
+Public Sub RevealMines()
+    Dim index As Integer
+    For i = 1 To Minefield.MineLookup.Count
+        index = Minefield.MineLookup(i)
+        Call Squares(index).Explode
+    Next
+    Call Form1.GameOver
+End Sub
 
 Public Sub DoFloodfill(Row As Integer, Column As Integer)
     Erase Visited
     ReDim Visited(Configuration.Columns * Configuration.Rows) As Boolean
     Call Floodfill(Row, Column)
-    
 End Sub
 
 Public Sub Floodfill(Row As Integer, Column As Integer)

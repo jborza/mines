@@ -1,18 +1,20 @@
 VERSION 5.00
 Begin VB.UserControl UserControlSquare 
-   Appearance      =   0  'Flat
-   BackColor       =   &H80000005&
+   BorderStyle     =   1  'Fixed Single
    ClientHeight    =   405
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   405
+   EditAtDesignTime=   -1  'True
+   PaletteMode     =   0  'Halftone
    ScaleHeight     =   405
    ScaleWidth      =   405
-   Begin VB.CommandButton Btn 
+   Begin VB.Label Btn 
+      Alignment       =   2  'Center
       Appearance      =   0  'Flat
-      BackColor       =   &H00FFC0C0&
-      Caption         =   "?"
-      CausesValidation=   0   'False
+      BackColor       =   &H80000005&
+      BackStyle       =   0  'Transparent
+      Caption         =   "1"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   13.5
@@ -22,12 +24,13 @@ Begin VB.UserControl UserControlSquare
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   400
+      ForeColor       =   &H80000008&
+      Height          =   420
       Left            =   0
-      Style           =   1  'Graphical
       TabIndex        =   0
       Top             =   0
-      Width           =   400
+      UseMnemonic     =   0   'False
+      Width           =   420
    End
 End
 Attribute VB_Name = "UserControlSquare"
@@ -40,29 +43,51 @@ Public MineNeighborCount As Variant
 Public Row As Integer
 Public Column As Integer
 Public FieldControl As UserControl
-
+Dim State As SquareState
 
 Enum SquareState
     stUnknown
     stRevealed
     stFlag
     stQuestion
+    stExploded
 End Enum
 
-Dim State As SquareState
+Public Property Get Color() As OLE_COLOR
+  Color = Btn.ForeColor
+End Property
+
+Public Property Let Color(ByVal c As OLE_COLOR)
+  Btn.ForeColor = c
+End Property
+
+Sub UserControl_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    Call Clicked(Button)
+End Sub
 
 Sub RevealByFloodfill()
     State = stRevealed
+    BorderStyle = 0
+    Btn.BorderStyle = 1
     Call ShowState
+End Sub
+
+Public Sub Explode()
+    If State = stExploded Then
+        Exit Sub
+    End If
+    Btn.Caption = "*"
+    State = stExploded
 End Sub
 
 Sub Uncover()
     If HasMine Then
-        MsgBox ("Game over!")
-        'TODO stop the entire game
+        Call Explode
+        Color = vbRed
+        Call ParentControls(0).RevealMines
     Else
         State = stRevealed
-        Enabled = False
+        BorderStyle = 0
         If MineNeighborCount = 0 Then
             Call ParentControls(0).DoFloodfill(Row, Column)
             Dim filledNeighbors() As Integer
@@ -88,7 +113,22 @@ End Sub
 Sub Colorize()
     Select Case MineNeighborCount
         Case 1:
-            'Call Btn.SetForeColor(&HFF)
+            Color = vbBlue
+        Case 2:
+            Color = &H18F01
+        Case 3:
+            Color = vbRed
+        Case 4:
+            Color = &H8F0001
+        Case 5:
+            Color = &H2018F
+        Case 6:
+            Color = &H8F8F01
+        Case 7:
+            Color = vbBlack
+        Case 8:
+            Color = &H8F8F8F
+            
     End Select
     
 End Sub
@@ -103,7 +143,7 @@ Public Sub ShowState()
                 Btn.Caption = MineNeighborCount ' " "
             End If
         Else
-            Btn.Caption = "."
+            Btn.Caption = " "
         End If
         Case stRevealed
             ' blank or number, not 0
@@ -121,13 +161,16 @@ Public Sub ShowState()
 End Sub
 
 Sub Btn_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Button = vbLeftButton Then
-    Call Uncover
-ElseIf Button = vbRightButton Then
-    Call Mark
-Else
-    
-End If
+    Call Clicked(Button)
+End Sub
+
+Private Sub Clicked(Button As Integer)
+    If Button = vbLeftButton Then
+        Call Uncover
+    ElseIf Button = vbRightButton Then
+        Call Mark
+    Else
+    End If
     Call ShowState
 End Sub
 
@@ -140,4 +183,3 @@ End Sub
 Public Sub SetNeighborCount(ByVal Count As Integer)
     NeighborCount = Count
 End Sub
-
