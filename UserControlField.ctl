@@ -37,16 +37,18 @@ Sub LayoutControls()
         For Row = 0 To Configuration.Rows - 1
             idx = Minefield.GetIndex(Row, col)
             Load Squares(idx)
+            With Squares(idx)
+                .Move col * 400, Row * 400, 400, 400
             
-            Squares(idx).Move col * 400, Row * 400, 400, 400
-            
-            If Minefield.HasMine(Row, col) Then
-                Squares(idx).HasMine = True
-            End If
-            Squares(idx).Visible = True
-            Mines = Minefield.MinesWithCount(Minefield.GetIndex(Row, col))
-            Squares(idx).MineNeighborCount = Mines
-            Call Squares(idx).ShowState
+                If Minefield.HasMine(Row, col) Then
+                    .HasMine = True
+                End If
+                .Visible = True
+                .MineNeighborCount = Minefield.MinesWithCount(Minefield.GetIndex(Row, col))
+                .Column = col
+                .Row = Row
+                Call .ShowState
+            End With
         Next
     Next
     
@@ -59,7 +61,7 @@ End Sub
 
 
 Public Sub DoFloodfill(Row As Integer, Column As Integer)
-    'TODO initialize Visited() array
+    Erase Visited
     ReDim Visited(Configuration.Columns * Configuration.Rows) As Boolean
     Call Floodfill(Row, Column)
     
@@ -80,12 +82,19 @@ Public Sub Floodfill(Row As Integer, Column As Integer)
     End If
     ' uncover this one
     Call Squares(index).RevealByFloodfill
+    Visited(index) = True
+    
     ' Don't continue if a mine is adjacent
     If Minefield.GetNeighborCount(Row, Column) > 0 Then
         Exit Sub
     End If
     Call Floodfill(Row + 1, Column)
-    Call Floodfill(Row, Column + 1)
     Call Floodfill(Row + 1, Column + 1)
+    Call Floodfill(Row, Column + 1)
+    Call Floodfill(Row - 1, Column + 1)
+    Call Floodfill(Row - 1, Column)
+    Call Floodfill(Row - 1, Column - 1)
+    Call Floodfill(Row, Column - 1)
+    Call Floodfill(Row + 1, Column - 1)
 End Sub
 
