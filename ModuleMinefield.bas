@@ -1,6 +1,6 @@
 Attribute VB_Name = "Minefield"
 Public MineLocations() As Point
-
+Public FlaggedMines As Integer
 'stores mine neighbor counts
 Public MinesWithCount() As Integer
 
@@ -14,6 +14,7 @@ Sub GenerateMines()
     
     Dim i As Integer
     For i = 0 To Configuration.Mines - 1
+        ' TODO don't insert the same mine twice
         pt.x = Int((Configuration.Columns * Rnd))
         pt.y = Int((Configuration.Rows * Rnd))
         MineLocations(i) = pt
@@ -81,3 +82,12 @@ Continue:
     CalculateNeighborCount = Count
 End Function
 
+Public Sub Flag()
+    FlaggedMines = FlaggedMines + 1
+    Call Form1.UpdateFlaggedMines
+End Sub
+
+Public Sub Unflag()
+    FlaggedMines = FlaggedMines - 1
+    Call Form1.UpdateFlaggedMines
+End Sub

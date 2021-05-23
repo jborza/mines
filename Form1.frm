@@ -82,17 +82,22 @@ Dim Ticks As Integer
 
 Private Sub Command1_Click()
     Call UserControlField1.Initialize
+    Call UpdateFlaggedMines
 End Sub
 
 Private Sub Form_Load()
     Ticks = 0
-    Configuration.Rows = 5
-    Configuration.Columns = 5
-    Configuration.Mines = 3
+    Configuration.Rows = 11
+    Configuration.Columns = 11
+    Configuration.Mines = 10
     Configuration.ShowAll = False
 End Sub
 
 Private Sub Timer1_Timer()
     Ticks = Ticks + 1
     LabelTime.Caption = Ticks
+End Sub
+
+Public Sub UpdateFlaggedMines()
+    LabelMines.Caption = (Configuration.Mines - Minefield.FlaggedMines)
 End Sub

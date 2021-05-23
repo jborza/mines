@@ -61,8 +61,6 @@ Sub Uncover()
         If MineNeighborCount = 0 Then
             Call ParentControls(0).DoFloodfill(Row, Column)
             Dim filledNeighbors() As Integer
-            
-            'filledNeighbors = Minefield.Floodfill(Row, Column)
         End If
     End If
     
@@ -72,12 +70,22 @@ Sub Mark()
     ' Toggle between flag, question mark and empty
     If State = stUnknown Then
         State = stFlag
+        Call Minefield.Flag
     ElseIf State = stFlag Then
         State = stQuestion
+        Call Minefield.Unflag
     ElseIf State = stQuestion Then
         State = stUnknown
     End If
     ' Else is state stRevealed, no nothing
+End Sub
+
+Sub Colorize()
+    Select Case MineNeighborCount
+        Case 1:
+            'Call Btn.SetForeColor(&HFF)
+    End Select
+    
 End Sub
 
 Public Sub ShowState()
@@ -90,17 +98,21 @@ Public Sub ShowState()
                 Btn.Caption = MineNeighborCount ' " "
             End If
         Else
-            Btn.Caption = " "
+            Btn.Caption = "."
         End If
         Case stRevealed
-            'TODO blank or number, not 0
-            Btn.Caption = MineNeighborCount
+            ' blank or number, not 0
+            If MineNeighborCount = 0 Then
+                Btn.Caption = " "
+            Else
+                Btn.Caption = MineNeighborCount
+            End If
+            Call Colorize
         Case stFlag
             Btn.Caption = "X"
         Case stQuestion
             Btn.Caption = "?"
     End Select
-    
 End Sub
 
 Sub Btn_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
