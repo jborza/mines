@@ -42,8 +42,8 @@ Public HasMine As Boolean
 Public MineNeighborCount As Variant
 Public Row As Integer
 Public Column As Integer
-Public FieldControl As UserControl
 Dim State As SquareState
+Public IsGenerated As Boolean
 
 Enum SquareState
     stUnknown
@@ -81,6 +81,10 @@ Public Sub Explode()
 End Sub
 
 Sub Uncover()
+    ' Cannot uncover flagged squares
+    If State = stFlag Then
+        Exit Sub
+    End If
     If HasMine Then
         Call Explode
         Color = vbRed

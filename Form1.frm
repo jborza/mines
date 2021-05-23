@@ -81,18 +81,22 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Dim Ticks As Integer
 
-
-Private Sub Command1_Click()
+Private Sub StartGame()
     Call UserControlField1.Initialize
     Call UpdateFlaggedMines
 End Sub
 
+Private Sub Command1_Click()
+    Call StartGame
+End Sub
+
 Private Sub Form_Load()
     Ticks = 0
-    Configuration.Rows = 3
-    Configuration.Columns = 3
-    Configuration.Mines = 3
+    Configuration.Rows = 9
+    Configuration.Columns = 9
+    Configuration.Mines = 10
     Configuration.ShowAll = False
+    Call StartGame
 End Sub
 
 Private Sub Timer1_Timer()

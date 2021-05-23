@@ -1,6 +1,5 @@
 VERSION 5.00
 Begin VB.UserControl UserControlField 
-   BackColor       =   &H80000018&
    ClientHeight    =   6300
    ClientLeft      =   0
    ClientTop       =   0
@@ -10,7 +9,7 @@ Begin VB.UserControl UserControlField
    Begin Project1.UserControlSquare Squares 
       Height          =   375
       Index           =   32767
-      Left            =   3960
+      Left            =   33000
       TabIndex        =   0
       Top             =   5280
       Width           =   375
@@ -23,8 +22,17 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-
 Dim Visited() As Boolean
+Dim MaxLoadedSquare As Integer
+
+Sub UnloadAll()
+    For Each Square In Squares
+        If Square.IsGenerated Then
+            Square.Visible = False
+            Unload Square
+        End If
+    Next
+End Sub
 
 Sub LayoutControls()
     ' Create all Squares and assign mines to them
@@ -33,6 +41,8 @@ Sub LayoutControls()
     Dim col As Integer
     Dim idx As Integer
     Dim Mines As Integer
+    Call UnloadAll
+    
     For col = 0 To Configuration.Columns - 1
         For Row = 0 To Configuration.Rows - 1
             idx = Minefield.GetIndex(Row, col)
@@ -47,6 +57,7 @@ Sub LayoutControls()
                 .MineNeighborCount = Minefield.MinesWithCount(Minefield.GetIndex(Row, col))
                 .Column = col
                 .Row = Row
+                .IsGenerated = True
                 Call .ShowState
             End With
         Next
