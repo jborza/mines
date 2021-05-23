@@ -8,15 +8,6 @@ Public Function GetIndex(Row As Integer, Column As Integer) As Integer
      GetIndex = Row * Configuration.Columns + Column
 End Function
 
-Public Function ExistsOld(ByVal col As Collection, ByVal key As String) As Boolean
-    On Error GoTo DoesntExist
-    col.Item (key)
-    Exists = True
-    Exit Function
-DoesntExist:
-    Exists = False
-End Function
-
 Public Function Exists(ByRef col As Collection, ByVal key As String) As Boolean
     On Error GoTo DoesntExist
     col.Item (key)

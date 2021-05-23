@@ -11,19 +11,21 @@ Begin VB.Form Form1
    StartUpPosition =   3  'Windows Default
    Begin Project1.UserControlField UserControlField1 
       Height          =   6015
-      Left            =   240
+      Left            =   120
       TabIndex        =   3
-      Top             =   1320
+      Top             =   1200
       Width           =   4695
-      _ExtentX        =   10610
-      _ExtentY        =   10821
+      _extentx        =   10610
+      _extenty        =   10821
    End
    Begin VB.CommandButton Command1 
+      Appearance      =   0  'Flat
       Caption         =   "Play"
       Height          =   555
-      Left            =   2160
+      Left            =   1920
+      Style           =   1  'Graphical
       TabIndex        =   2
-      Top             =   480
+      Top             =   600
       Width           =   855
    End
    Begin VB.Timer Timer1 
@@ -46,9 +48,9 @@ Begin VB.Form Form1
       EndProperty
       ForeColor       =   &H000000FF&
       Height          =   495
-      Left            =   240
+      Left            =   120
       TabIndex        =   1
-      Top             =   480
+      Top             =   600
       Width           =   1215
    End
    Begin VB.Label LabelTime 
@@ -68,7 +70,7 @@ Begin VB.Form Form1
       Height          =   495
       Left            =   3600
       TabIndex        =   0
-      Top             =   480
+      Top             =   600
       Width           =   1215
    End
 End

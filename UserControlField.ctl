@@ -10,7 +10,7 @@ Begin VB.UserControl UserControlField
    Begin Project1.UserControlSquare Squares 
       Height          =   495
       Index           =   32767
-      Left            =   4080
+      Left            =   24080
       TabIndex        =   0
       Top             =   5280
       Width           =   495

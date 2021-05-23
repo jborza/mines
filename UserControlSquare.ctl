@@ -1,5 +1,7 @@
 VERSION 5.00
 Begin VB.UserControl UserControlSquare 
+   Appearance      =   0  'Flat
+   BackColor       =   &H80000005&
    ClientHeight    =   405
    ClientLeft      =   0
    ClientTop       =   0
@@ -7,6 +9,8 @@ Begin VB.UserControl UserControlSquare
    ScaleHeight     =   405
    ScaleWidth      =   405
    Begin VB.CommandButton Btn 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00FFC0C0&
       Caption         =   "?"
       CausesValidation=   0   'False
       BeginProperty Font 
@@ -20,6 +24,7 @@ Begin VB.UserControl UserControlSquare
       EndProperty
       Height          =   400
       Left            =   0
+      Style           =   1  'Graphical
       TabIndex        =   0
       Top             =   0
       Width           =   400
