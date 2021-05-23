@@ -23,6 +23,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+
+Dim Visited() As Boolean
+
 Sub LayoutControls()
     ' Create all Squares and assign mines to them
     Dim sq As Control
@@ -32,7 +35,7 @@ Sub LayoutControls()
     Dim Mines As Integer
     For col = 0 To Configuration.Columns - 1
         For Row = 0 To Configuration.Rows - 1
-            idx = Minefield.GetIndex(col, Row)
+            idx = Minefield.GetIndex(Row, col)
             Load Squares(idx)
             
             Squares(idx).Move col * 400, Row * 400, 400, 400
@@ -41,7 +44,6 @@ Sub LayoutControls()
                 Squares(idx).HasMine = True
             End If
             Squares(idx).Visible = True
-            'Mines = Minefield.GetNeighborCount(Row, col)
             Mines = Minefield.MinesWithCount(Minefield.GetIndex(Row, col))
             Squares(idx).MineNeighborCount = Mines
             Call Squares(idx).ShowState
@@ -55,19 +57,35 @@ Public Sub Initialize()
     Call LayoutControls
 End Sub
 
-Public Sub Test()
-    MsgBox ("Boo")
+
+Public Sub DoFloodfill(Row As Integer, Column As Integer)
+    'TODO initialize Visited() array
+    ReDim Visited(Configuration.Columns * Configuration.Rows) As Boolean
+    Call Floodfill(Row, Column)
+    
 End Sub
 
 Public Sub Floodfill(Row As Integer, Column As Integer)
     '4-way flood fill from this point
     ' now we can iterate over Square items, as they are indexed with GetIndex
     ' consult Minefield for neighbor counts
+    
     Dim index As Integer
-    index = Minefield.GetIndex(Row + 1, Column)
-    If Minefield.MinesWithCount(index) = 0 Then
-        'Reveal this mine
-        Call Squares(index).RevealByFloodfill
+    If Not Minefield.CellExists(Row, Column) Then
+        Exit Sub
     End If
+    index = Minefield.GetIndex(Row, Column)
+    If Visited(index) Then
+        Exit Sub
+    End If
+    ' uncover this one
+    Call Squares(index).RevealByFloodfill
+    ' Don't continue if a mine is adjacent
+    If Minefield.GetNeighborCount(Row, Column) > 0 Then
+        Exit Sub
+    End If
+    Call Floodfill(Row + 1, Column)
+    Call Floodfill(Row, Column + 1)
+    Call Floodfill(Row + 1, Column + 1)
 End Sub
 

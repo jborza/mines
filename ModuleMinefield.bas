@@ -35,7 +35,7 @@ Sub PopulateNeighbors()
         For Row = 0 To Configuration.Rows - 1
             index = GetIndex(Row, col)
             If MinesWithCount(index) <> -1 Then
-                MinesWithCount(index) = GetNeighborCount(Row, col)
+                MinesWithCount(index) = CalculateNeighborCount(Row, col)
             End If
         Next Row
     Next col
@@ -45,21 +45,22 @@ Public Function HasMine(Row As Integer, Column As Integer) As Boolean
     HasMine = MinesWithCount(GetIndex(Row, Column)) = -1
 End Function
 
+Public Function CellExists(Row As Integer, Column As Integer) As Boolean
+    CellExists = True
+    If Column < 0 Or Column >= Configuration.Columns Then
+        CellExists = False
+    End If
+    If Row < 0 Or Row >= Configuration.Rows Then
+        CellExists = False
+    End If
+End Function
 
-'TODO precalculate into an array
-Public Function HasMineOld(Row As Integer, Column As Integer) As Boolean
-    HasMineOld = False
-    Dim i As Integer
-    For i = LBound(MineLocations) To UBound(MineLocations)
-        If MineLocations(i).x = Column And MineLocations(i).y = Row Then
-            HasMineOld = True
-            Exit Function
-        End If
-    Next
+Public Function GetNeighborCount(Row As Integer, Column As Integer) As Integer
+    GetNeighborCount = MinesWithCount(GetIndex(Row, Column))
 End Function
 
 'TODO precalculate this
-Public Function GetNeighborCount(Row As Integer, Column As Integer) As Integer
+Function CalculateNeighborCount(Row As Integer, Column As Integer) As Integer
     Dim Count As Integer
     Dim x As Integer
     Dim y As Integer
@@ -77,6 +78,6 @@ Public Function GetNeighborCount(Row As Integer, Column As Integer) As Integer
 Continue:
         Next y
     Next x
-    GetNeighborCount = Count
+    CalculateNeighborCount = Count
 End Function
 

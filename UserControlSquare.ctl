@@ -12,7 +12,7 @@ Begin VB.UserControl UserControlSquare
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   13.5
-         Charset         =   0
+         Charset         =   238
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
@@ -59,7 +59,7 @@ Sub Uncover()
         State = stRevealed
         Enabled = False
         If MineNeighborCount = 0 Then
-            Call ParentControls(0).Floodfill(Row, Column)
+            Call ParentControls(0).DoFloodfill(Row, Column)
             Dim filledNeighbors() As Integer
             
             'filledNeighbors = Minefield.Floodfill(Row, Column)
@@ -83,8 +83,7 @@ End Sub
 Public Sub ShowState()
     Select Case State
         Case stUnknown
-        ' TODO change to True for release mode
-        If False Then
+        If Configuration.ShowAll Then
             If HasMine Then
                 Btn.Caption = "."
             Else
@@ -94,7 +93,7 @@ Public Sub ShowState()
             Btn.Caption = " "
         End If
         Case stRevealed
-            'TODO blank or number
+            'TODO blank or number, not 0
             Btn.Caption = MineNeighborCount
         Case stFlag
             Btn.Caption = "X"
@@ -125,4 +124,3 @@ Public Sub SetNeighborCount(ByVal Count As Integer)
     NeighborCount = Count
 End Sub
 
-Public Event OnFloodfill(Row As Integer, Column As Integer)

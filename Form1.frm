@@ -86,9 +86,10 @@ End Sub
 
 Private Sub Form_Load()
     Ticks = 0
-    Configuration.Rows = 4
-    Configuration.Columns = 4
-    Configuration.Mines = 2
+    Configuration.Rows = 5
+    Configuration.Columns = 5
+    Configuration.Mines = 3
+    Configuration.ShowAll = False
 End Sub
 
 Private Sub Timer1_Timer()
