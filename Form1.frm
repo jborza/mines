@@ -15,8 +15,8 @@ Begin VB.Form Form1
       TabIndex        =   3
       Top             =   720
       Width           =   9495
-      _ExtentX        =   10610
-      _ExtentY        =   10821
+      _extentx        =   10610
+      _extenty        =   10821
    End
    Begin VB.CommandButton Command1 
       Appearance      =   0  'Flat
@@ -107,6 +107,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Dim Ticks As Integer
+Dim CustomFieldPicked As Boolean
 
 Private Sub StartGame()
     Call UserControlField1.Initialize
@@ -141,7 +142,7 @@ Private Sub MenuExit_Click()
     Unload Me
 End Sub
 
-Private Sub ConfigureGame(Rows As Integer, Columns As Integer, Mines As Integer)
+Public Sub ConfigureGame(Rows As Integer, Columns As Integer, Mines As Integer)
     Configuration.Rows = Rows
     Configuration.Columns = Columns
     Configuration.Mines = Mines
@@ -162,3 +163,10 @@ Private Sub MenuExpert_Click()
     Call ConfigureGame(16, 20, 99)
 End Sub
 
+Private Sub MenuCustom_Click()
+    Dialog.Show vbModal
+End Sub
+
+Public Sub SetResult(CustomFieldResult As Boolean)
+    CustomFieldPicked = CustomFieldResult
+End Sub
