@@ -1,13 +1,13 @@
 VERSION 5.00
 Begin VB.Form Form1 
    Caption         =   "Minesweeper"
-   ClientHeight    =   8865
+   ClientHeight    =   705
    ClientLeft      =   165
    ClientTop       =   735
-   ClientWidth     =   9735
+   ClientWidth     =   4410
    LinkTopic       =   "Form1"
-   ScaleHeight     =   8865
-   ScaleWidth      =   9735
+   ScaleHeight     =   705
+   ScaleWidth      =   4410
    StartUpPosition =   3  'Windows Default
    Begin Project1.UserControlField UserControlField1 
       Height          =   8055
@@ -110,6 +110,8 @@ Dim Ticks As Integer
 Dim CustomFieldPicked As Boolean
 
 Private Sub StartGame()
+    Ticks = 0
+    Timer1.Enabled = True
     Call UserControlField1.Initialize
     Call UpdateFlaggedMines
 End Sub
@@ -130,7 +132,7 @@ Private Sub Timer1_Timer()
 End Sub
 
 Public Sub UpdateFlaggedMines()
-    LabelMines.Caption = (Configuration.Mines - Minefield.FlaggedMines)
+    LabelMines.Caption = (Configuration.mines - Minefield.FlaggedMines)
 End Sub
 
 Public Sub GameOver()
@@ -142,12 +144,23 @@ Private Sub MenuExit_Click()
     Unload Me
 End Sub
 
-Public Sub ConfigureGame(Rows As Integer, Columns As Integer, Mines As Integer)
-    Configuration.Rows = Rows
-    Configuration.Columns = Columns
-    Configuration.Mines = Mines
-    Ticks = 0
-    Timer1.Enabled = True
+Private Sub Resize()
+    Dim myWidth As Integer, myHeight As Integer
+    myWidth = 400
+    myHeight = 1400
+    Width = myWidth + (Configuration.rows * 405)
+    Height = myHeight + (Configuration.columns * 405)
+End Sub
+
+Public Sub ConfigureGame(rows As Integer, columns As Integer, mines As Integer)
+    Configuration.rows = rows
+    Configuration.columns = columns
+    Configuration.mines = mines
+    Call Resize
+    Call StartGame
+End Sub
+
+Private Sub MenuNew_Click()
     Call StartGame
 End Sub
 
