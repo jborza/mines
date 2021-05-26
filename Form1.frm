@@ -15,8 +15,8 @@ Begin VB.Form Form1
       TabIndex        =   3
       Top             =   720
       Width           =   9495
-      _extentx        =   10610
-      _extenty        =   10821
+      _ExtentX        =   10610
+      _ExtentY        =   10821
    End
    Begin VB.CommandButton Command1 
       Appearance      =   0  'Flat
@@ -112,6 +112,7 @@ Dim CustomFieldPicked As Boolean
 Private Sub StartGame()
     Ticks = 0
     Timer1.Enabled = True
+    Command1.Caption = ":-)"
     Call UserControlField1.Initialize
     Call UpdateFlaggedMines
 End Sub
@@ -123,7 +124,7 @@ End Sub
 Private Sub Form_Load()
     Ticks = 0
     Configuration.ShowAll = False
-    Call ConfigureGame(9, 9, 10)
+    Call ConfigureGame(4, 4, 2)
 End Sub
 
 Private Sub Timer1_Timer()
@@ -132,12 +133,17 @@ Private Sub Timer1_Timer()
 End Sub
 
 Public Sub UpdateFlaggedMines()
-    LabelMines.Caption = (Configuration.mines - Minefield.FlaggedMines)
+    LabelMines.Caption = (Configuration.Mines - Minefield.FlaggedMines)
 End Sub
 
-Public Sub GameOver()
+Public Sub GameOver(Win As Boolean)
     Timer1.Enabled = False
-    Command1.Caption = ":-("
+    If Win Then
+        Command1.Caption = "B-)"
+        MsgBox ("Congratulations!")
+    Else
+        Command1.Caption = ":-("
+    End If
 End Sub
 
 Private Sub MenuExit_Click()
@@ -148,14 +154,14 @@ Private Sub Resize()
     Dim myWidth As Integer, myHeight As Integer
     myWidth = 400
     myHeight = 1400
-    Width = myWidth + (Configuration.rows * 405)
-    Height = myHeight + (Configuration.columns * 405)
+    Width = myWidth + (Configuration.Rows * 405)
+    Height = myHeight + (Configuration.Columns * 405)
 End Sub
 
-Public Sub ConfigureGame(rows As Integer, columns As Integer, mines As Integer)
-    Configuration.rows = rows
-    Configuration.columns = columns
-    Configuration.mines = mines
+Public Sub ConfigureGame(Rows As Integer, Columns As Integer, Mines As Integer)
+    Configuration.Rows = Rows
+    Configuration.Columns = Columns
+    Configuration.Mines = Mines
     Call Resize
     Call StartGame
 End Sub

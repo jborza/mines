@@ -92,10 +92,11 @@ Sub Uncover()
     Else
         State = stRevealed
         BorderStyle = 0
-        If MineNeighborCount = 0 Then
+        'If MineNeighborCount = 0 Then
             Call ParentControls(0).DoFloodfill(Row, Column)
-            Dim filledNeighbors() As Integer
-        End If
+        'End If
+        'Else
+         '   Call ParentControls(0).MarkAsRevealed(Minefield.GetIndex(
     End If
     
 End Sub

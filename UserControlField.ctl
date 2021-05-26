@@ -40,11 +40,11 @@ Sub LayoutControls()
     Dim Row As Integer
     Dim col As Integer
     Dim idx As Integer
-    Dim Mines As Integer
+    Dim mines As Integer
     Call UnloadAll
     
-    For col = 0 To Configuration.Columns - 1
-        For Row = 0 To Configuration.Rows - 1
+    For col = 0 To Configuration.columns - 1
+        For Row = 0 To Configuration.rows - 1
             idx = Minefield.GetIndex(Row, col)
             Load Squares(idx)
             With Squares(idx)
@@ -68,6 +68,7 @@ End Sub
 Public Sub Initialize()
     Call Minefield.GenerateMines
     Call LayoutControls
+    ReDim Visited(Configuration.columns * Configuration.rows) As Boolean
 End Sub
 
 Public Sub RevealMines()
@@ -76,13 +77,22 @@ Public Sub RevealMines()
         index = Minefield.MineLookup(i)
         Call Squares(index).Explode
     Next
-    Call Form1.GameOver
+    Call Form1.GameOver(False)
 End Sub
 
 Public Sub DoFloodfill(Row As Integer, Column As Integer)
-    Erase Visited
-    ReDim Visited(Configuration.Columns * Configuration.Rows) As Boolean
+    'Erase Visited
+    'ReDim Visited(Configuration.columns * Configuration.rows) As Boolean
     Call Floodfill(Row, Column)
+End Sub
+
+Public Sub MarkAsRevealed(index As Integer)
+    Call Squares(index).RevealByFloodfill
+    Visited(index) = True
+    Minefield.RevealedMineCount = Minefield.RevealedMineCount + 1
+    If Minefield.IsGameWon Then
+        Call Form1.GameOver(True)
+    End If
 End Sub
 
 Public Sub Floodfill(Row As Integer, Column As Integer)
@@ -99,8 +109,7 @@ Public Sub Floodfill(Row As Integer, Column As Integer)
         Exit Sub
     End If
     ' uncover this one
-    Call Squares(index).RevealByFloodfill
-    Visited(index) = True
+    Call MarkAsRevealed(index)
     
     ' Don't continue if a mine is adjacent
     If Minefield.GetNeighborCount(Row, Column) > 0 Then
