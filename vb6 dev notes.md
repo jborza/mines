@@ -43,7 +43,9 @@ Could not add square control on its own - had to uncheck Remove information abou
 
 Could not figure out a way to trigger flood fill from the child control, the syntax is actually:
 
-How to extract files from win2k to PC? The easiest in the end was to attach a `vmdk` image, which can then be extracted with 7-zip or mounted on Linux. 
+Definitely set "Save changes" option in VB6 settings->Environment->When program starts
+
+The game sometimes crashes with access violation
 
 ```vb
 Call ParentControls(0).Floodfill
