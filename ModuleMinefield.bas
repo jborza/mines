@@ -6,7 +6,7 @@ Public MineLookup As New Collection
 Public RevealedMineCount As Integer
 
 Public Function GetIndex(Row As Integer, Column As Integer) As Integer
-     GetIndex = Row * Configuration.Columns + Column
+     GetIndex = Row * Configuration.columns + Column
 End Function
 
 Public Function Exists(ByRef col As Collection, ByVal key As String) As Boolean
@@ -18,18 +18,21 @@ DoesntExist:
     Exists = False
 End Function
 
+Sub ResetMinefield()
+    Set MineLookup = Nothing
+    Set MineLookup = New Collection
+    RevealedMineCount = 0
+End Sub
+
 Sub GenerateMines()
-    
     Dim pt As Point
     Dim i As Integer
     Dim key As Integer
-    ' reset MineLookup
-    Set MineLookup = Nothing
-    Set MineLookup = New Collection
-    Do While MineLookup.Count < Configuration.Mines
+    Call ResetMinefield
+    Do While MineLookup.Count < Configuration.mines
     
-        pt.x = Int((Configuration.Columns * Rnd))
-        pt.y = Int((Configuration.Rows * Rnd))
+        pt.x = Int((Configuration.columns * Rnd))
+        pt.y = Int((Configuration.rows * Rnd))
         key = Minefield.GetIndex(pt.y, pt.x)
         ' don't insert the same mine twice
         If Exists(MineLookup, Str(key)) Then
@@ -42,7 +45,7 @@ Sub GenerateMines()
 End Sub
 
 Sub PopulateNeighbors()
-    ReDim MinesWithCount(Configuration.Columns * Configuration.Rows)
+    ReDim MinesWithCount(Configuration.columns * Configuration.rows)
 
     ' insert mines first
     Dim index As Integer
@@ -52,8 +55,8 @@ Sub PopulateNeighbors()
     Next
     Dim Row As Integer
     Dim col As Integer
-    For col = 0 To Configuration.Columns - 1
-        For Row = 0 To Configuration.Rows - 1
+    For col = 0 To Configuration.columns - 1
+        For Row = 0 To Configuration.rows - 1
             index = GetIndex(Row, col)
             If MinesWithCount(index) <> -1 Then
                 MinesWithCount(index) = CalculateNeighborCount(Row, col)
@@ -68,10 +71,10 @@ End Function
 
 Public Function CellExists(Row As Integer, Column As Integer) As Boolean
     CellExists = True
-    If Column < 0 Or Column >= Configuration.Columns Then
+    If Column < 0 Or Column >= Configuration.columns Then
         CellExists = False
     End If
-    If Row < 0 Or Row >= Configuration.Rows Then
+    If Row < 0 Or Row >= Configuration.rows Then
         CellExists = False
     End If
 End Function
@@ -86,10 +89,10 @@ Function CalculateNeighborCount(Row As Integer, Column As Integer) As Integer
     Dim y As Integer
     For x = Column - 1 To Column + 1
         For y = Row - 1 To Row + 1
-            If x < 0 Or x >= Configuration.Columns Then
+            If x < 0 Or x >= Configuration.columns Then
                 GoTo Continue
             End If
-            If y < 0 Or y >= Configuration.Rows Then
+            If y < 0 Or y >= Configuration.rows Then
                 GoTo Continue
             End If
             If HasMine(y, x) Then
@@ -112,5 +115,5 @@ Public Sub Unflag()
 End Sub
 
 Public Function IsGameWon() As Boolean
-    IsGameWon = RevealedMineCount + Configuration.Mines = Configuration.Rows * Configuration.Columns
+    IsGameWon = RevealedMineCount + Configuration.mines = Configuration.rows * Configuration.columns
 End Function

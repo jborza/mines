@@ -86,6 +86,15 @@ Public Sub DoFloodfill(Row As Integer, Column As Integer)
     Call Floodfill(Row, Column)
 End Sub
 
+Private Function GetRevealedCount() As Integer
+    GetRevealedCount = 0
+    For i = 0 To Configuration.columns * Configuration.rows - 1
+        If Visited(i) Then
+            GetRevealedCount = GetRevealedCount + 1
+        End If
+    Next
+End Function
+
 Public Sub MarkAsRevealed(index As Integer)
     Call Squares(index).RevealByFloodfill
     Visited(index) = True
@@ -96,10 +105,9 @@ Public Sub MarkAsRevealed(index As Integer)
 End Sub
 
 Public Sub Floodfill(Row As Integer, Column As Integer)
-    '4-way flood fill from this point
+    ' 8-way flood fill from this point
     ' now we can iterate over Square items, as they are indexed with GetIndex
     ' consult Minefield for neighbor counts
-    
     Dim index As Integer
     If Not Minefield.CellExists(Row, Column) Then
         Exit Sub

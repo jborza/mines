@@ -123,8 +123,8 @@ End Sub
 
 Private Sub Form_Load()
     Ticks = 0
-    Configuration.ShowAll = False
-    Call ConfigureGame(4, 4, 2)
+    Configuration.ShowAll = True
+    Call ConfigureGame(10, 20, 7)
 End Sub
 
 Private Sub Timer1_Timer()
@@ -133,7 +133,7 @@ Private Sub Timer1_Timer()
 End Sub
 
 Public Sub UpdateFlaggedMines()
-    LabelMines.Caption = (Configuration.Mines - Minefield.FlaggedMines)
+    LabelMines.Caption = (Configuration.mines - Minefield.FlaggedMines)
 End Sub
 
 Public Sub GameOver(Win As Boolean)
@@ -154,14 +154,14 @@ Private Sub Resize()
     Dim myWidth As Integer, myHeight As Integer
     myWidth = 400
     myHeight = 1400
-    Width = myWidth + (Configuration.Rows * 405)
-    Height = myHeight + (Configuration.Columns * 405)
+    Width = myWidth + (Configuration.rows * 405)
+    Height = myHeight + (Configuration.columns * 405)
 End Sub
 
-Public Sub ConfigureGame(Rows As Integer, Columns As Integer, Mines As Integer)
-    Configuration.Rows = Rows
-    Configuration.Columns = Columns
-    Configuration.Mines = Mines
+Public Sub ConfigureGame(rows As Integer, columns As Integer, mines As Integer)
+    Configuration.rows = rows
+    Configuration.columns = columns
+    Configuration.mines = mines
     Call Resize
     Call StartGame
 End Sub
