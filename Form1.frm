@@ -123,7 +123,7 @@ End Sub
 
 Private Sub Form_Load()
     Ticks = 0
-    Configuration.ShowAll = True
+    Configuration.ShowAll = False
     Call ConfigureGame(9, 9, 10)
 End Sub
 
