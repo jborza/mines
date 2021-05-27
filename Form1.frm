@@ -124,7 +124,7 @@ End Sub
 Private Sub Form_Load()
     Ticks = 0
     Configuration.ShowAll = True
-    Call ConfigureGame(10, 20, 7)
+    Call ConfigureGame(9, 9, 10)
 End Sub
 
 Private Sub Timer1_Timer()
@@ -154,8 +154,8 @@ Private Sub Resize()
     Dim myWidth As Integer, myHeight As Integer
     myWidth = 400
     myHeight = 1400
-    Width = myWidth + (Configuration.rows * 405)
-    Height = myHeight + (Configuration.columns * 405)
+    Width = myWidth + (Configuration.columns * 405)
+    Height = myHeight + (Configuration.rows * 405)
 End Sub
 
 Public Sub ConfigureGame(rows As Integer, columns As Integer, mines As Integer)

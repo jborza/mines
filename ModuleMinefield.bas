@@ -25,15 +25,15 @@ Sub ResetMinefield()
 End Sub
 
 Sub GenerateMines()
-    Dim pt As Point
+    Dim x As Integer
+    Dim y As Integer
     Dim i As Integer
     Dim key As Integer
     Call ResetMinefield
     Do While MineLookup.Count < Configuration.mines
-    
-        pt.x = Int((Configuration.columns * Rnd))
-        pt.y = Int((Configuration.rows * Rnd))
-        key = Minefield.GetIndex(pt.y, pt.x)
+        x = Int((Configuration.columns * Rnd))
+        y = Int((Configuration.rows * Rnd))
+        key = Minefield.GetIndex(y, x)
         ' don't insert the same mine twice
         If Exists(MineLookup, Str(key)) Then
             i = i - 1
