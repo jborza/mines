@@ -154,7 +154,7 @@ End Sub
 Private Sub Resize()
     Dim myWidth As Integer, myHeight As Integer
     myWidth = 450
-    myHeight = 1550
+    myHeight = 1600
     Width = myWidth + (Configuration.columns * 405)
     Height = myHeight + (Configuration.rows * 405)
 End Sub
