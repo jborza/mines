@@ -122,6 +122,7 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Form_Load()
+    Call Randomize
     Ticks = 0
     Configuration.ShowAll = False
     Call ConfigureGame(9, 9, 10)
@@ -152,8 +153,8 @@ End Sub
 
 Private Sub Resize()
     Dim myWidth As Integer, myHeight As Integer
-    myWidth = 400
-    myHeight = 1400
+    myWidth = 450
+    myHeight = 1550
     Width = myWidth + (Configuration.columns * 405)
     Height = myHeight + (Configuration.rows * 405)
 End Sub
